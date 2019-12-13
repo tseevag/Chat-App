@@ -2,6 +2,12 @@ import React, {useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 
+import './Chat.css'
+
+import InfoBar from '../InfoBar/infoBar';
+import Input from '../Input/Input';
+import Messages from '../Messages/Messages';
+
 let socket;
 
 const Chat = ({location}) => {
@@ -10,7 +16,7 @@ const Chat = ({location}) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
 
-    const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = '192.168.100.203:5000';
 
     useEffect(() => {
         const {name, room} = queryString.parse(location.search);
@@ -33,7 +39,7 @@ const Chat = ({location}) => {
     }, [ENDPOINT, location.search]);
 
 
-    
+
     useEffect(() => {
         socket.on('message', (message) => {
             setMessages([...messages, message]);
@@ -54,11 +60,9 @@ const Chat = ({location}) => {
     return(
         <div className='outerContainer'>
             <div className='container'>
-                <input 
-                    value={message} 
-                    onChange={ e => setMessage(e.target.value)}
-                    onKeyPress={ e =>e.key === 'Enter' ? sendMessage(e): null}
-                />
+                <InfoBar room={room} />
+                <Messages messages={messages} user={name}/>
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
             </div>
         </div>
     )

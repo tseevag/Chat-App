@@ -1,3 +1,7 @@
+p {
+  margin: 10px 0;
+}
+
 .outerContainer {
     display: flex;
     justify-content: center;

@@ -4,14 +4,16 @@ const addUser = (user) => {
     name = user.name.trim().toLowerCase();
     room = user.room.trim().toLowerCase();
 
-    const existingUser = users.find(usr => usr.name === name && usr.room === room );
-    
-    if(existingUser)
-        return {error: 'User already exists !!'};
+    const userExist = users.find(usr => usr.name === name && usr.room === room );
+    console.log("eu :",userExist);
+
+    if(userExist){
+        return {error: 'User already exists !!', user:null};
+    }
 
     users.push(user);
 
-    return user;
+    return {error: null, user};
 }
 
 const removeUser = id => {

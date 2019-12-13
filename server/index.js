@@ -11,18 +11,22 @@ const {addUser, removeUser, getUser, getUserInRoom} = require('./users');
 const PORT = process.env.PORT || 5000;
 
 io.on('connection',(socket) => {
-    console.log("A user is connected !");
-
     socket.on('join', ({ name, room }, cb) => {
-        console.log(name, room)
         const { error, user } = addUser({id:socket.id, name, room});
 
-        if(error) return cb(error);
+console.log("added u:",user);
+
+        if(error) {
+            return cb(error);
+        } else {
+            socket.emit('message', { user: 'admin', message: `${name}, welcome to room ${room}`});
+            socket.broadcast.to(room).emit('message', { user: 'admin', message: `${name} has joined the chat !!`});
         
-        socket.emit('message', { user: 'admin', message: `${name}, welcome to the room ${room}`});
-        socket.broadcast.to(room).emit('message', { user: 'admin', message: `${name} has joined chat !!`});
+            socket.join(room);
+
+        }
+
         
-        socket.join(room);
     });
 
     socket.on('chat message', (message, cb) => {
@@ -34,7 +38,11 @@ io.on('connection',(socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log('User has left !');
+        const user = removeUser(socket.id);
+
+        if(user){
+            io.to(user.room).emit('message', { user: 'admin', message: `${user.name} left the chat !!`});
+        }
     });
 });
 
