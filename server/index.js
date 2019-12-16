@@ -14,8 +14,6 @@ io.on('connection',(socket) => {
     socket.on('join', ({ name, room }, cb) => {
         const { error, user } = addUser({id:socket.id, name, room});
 
-console.log("added u:",user);
-
         if(error) {
             return cb(error);
         } else {
@@ -24,6 +22,7 @@ console.log("added u:",user);
         
             socket.join(room);
 
+            io.to(room).emit("room data", { room, users: getUserInRoom(room)});
         }
 
         
@@ -42,6 +41,7 @@ console.log("added u:",user);
 
         if(user){
             io.to(user.room).emit('message', { user: 'admin', message: `${user.name} left the chat !!`});
+            io.to(user.room).emit("room data", { room: user.room, users: getUserInRoom(user.room)});
         }
     });
 });
