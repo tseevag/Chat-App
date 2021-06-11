@@ -1,0 +1,19 @@
+{
+  "name": "shivas-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": " ",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tseevag/Chat-App.git"
+  },
+  "author": "Shiva Gaihre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tseevag/Chat-App/issues"
+  },
+  "homepage": "https://github.com/tseevag/Chat-App#readme"
+}
